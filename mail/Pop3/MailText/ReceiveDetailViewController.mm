@@ -127,15 +127,6 @@
 {
     
     NSArray *array = [_message attachments];
-    
-    for (int i = 0 ; i< array.count;i++) {
-        MCOAbstractPart *attach = [array objectAtIndex:i];
-        NSLog(@"attach = %@",attach);
-        NSLog(@"atct connection= %@ name = %@",attach.contentLocation,attach.filename);
-        
-    }
-    
-    
 	MCLog("set message : %s", message.description.UTF8String);
     for(MCOOperation * op in _ops) {
         [op cancel];
