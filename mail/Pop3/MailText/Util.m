@@ -46,6 +46,7 @@
 {
     NSDateFormatter *formater = [[[NSDateFormatter alloc] init] autorelease];
     [formater setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    [formater setTimeZone:[NSTimeZone timeZoneWithName:@"shanghai"]];
     return  [formater stringFromDate:date];
 }
 

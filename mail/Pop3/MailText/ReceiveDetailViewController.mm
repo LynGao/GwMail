@@ -146,8 +146,6 @@
 
 - (MCOIMAPFetchContentOperation *) _fetchIMAPPartWithUniqueID:(NSString *)partUniqueID folder:(NSString *)folder
 {
-    MCLog("%s is missing, fetching", partUniqueID.description.UTF8String);
-    
     if ([_pending containsObject:partUniqueID]) {
         return nil;
     }
@@ -169,8 +167,6 @@
         [_ops removeObject:op];
         [_storage setObject:data forKey:partUniqueID];
         [_pending removeObject:partUniqueID];
-        MCLog("downloaded %s", partUniqueID.description.UTF8String);
-        NSLog(@"downloaded %s", partUniqueID.description.UTF8String);
         [self _callbackForPartUniqueID:partUniqueID error:nil];
     }];
     
