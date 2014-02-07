@@ -62,10 +62,6 @@
     
     _rowCount = 3;
     
-//    dispatch_async(dispatch_get_current_queue(), ^{
-//        [self reBuildSender];
-//    });
-    
     self.title = @"邮件编辑";
     
     _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStylePlain];

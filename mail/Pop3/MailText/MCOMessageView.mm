@@ -91,6 +91,7 @@ pre {\
 
 - (void) dealloc
 {
+    [_webView setDelegate:nil];
     self.htmlString = nil;
     [_message release];
     [_folder release];

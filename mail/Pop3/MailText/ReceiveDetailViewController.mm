@@ -13,6 +13,11 @@
 #import "MCOMessageView.h"
 #import "Util.h"
 
+#import "UIAlertView+Block.h"
+
+#import "SendMailViewController.h"
+
+
 @interface ReceiveDetailViewController () <MCOMessageViewDelegate,UIDocumentInteractionControllerDelegate>
 {
     UIDocumentInteractionController *_docInteractionController;
@@ -55,11 +60,89 @@
     return self;
 }
 
+#pragma mark -- 回复邮件
+- (void)replayMail
+{
+    SendMailViewController *send = [[SendMailViewController alloc] init];
+    [self presentViewController:send
+                       animated:YES
+                     completion:NULL];
+}
+
+#pragma mark -- 删除邮件
+- (void)deleteMail
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"是否删除邮件"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
+    [alert showAlertViewWithBlock:^(NSInteger buttonIndex) {
+       
+        if (buttonIndex == 1) {
+            if (self.requestSessionType == TYPEPOP) {
+                MCOPOPSession *popsession = [[[MCOPOPSession alloc] init] autorelease];
+                MCOIndexSet *set = [MCOIndexSet indexSetWithIndex:self.popIndex];
+                MCOPOPOperation *op = [popsession deleteMessagesOperationWithIndexes:set];
+                [op start:^(NSError *error) {
+                    if (error) {
+                        [Util showTipsLabels:self.view setMsg:@"删除失败" setOffset:0.0];
+                    }
+                }];
+            }else{
+                MCOIMAPSession *session = [[[MCOIMAPSession alloc] init] autorelease];
+                
+                MCOIMAPOperation *op = [session storeFlagsOperationWithFolder:@"INBOX"
+                                                                         uids:[MCOIndexSet indexSetWithIndex:[_message uid]]
+                                                                         kind:MCOIMAPStoreFlagsRequestKindSet
+                                                                        flags:MCOMessageFlagDeleted];
+                [op start:^(NSError * error) {
+                    if(!error) {
+                        NSLog(@"Updated flags!");
+                    } else {
+                       [Util showTipsLabels:self.view setMsg:@"删除失败" setOffset:0.0];
+                    }
+                
+                    MCOIMAPOperation *deleteOp = [session expungeOperation:@"INBOX"];
+                    [deleteOp start:^(NSError *error) {
+                        if(error) {
+                            NSLog(@"Error expunging folder:%@", error);
+                        } else {
+                            NSLog(@"Successfully expunged folder");
+                        }
+                    }];
+                }];
+            }
+        }
+    }];
+}
+
 - (void)viewDidLoad {
     
-    _messageView = [[MCOMessageView alloc] initWithFrame:self.view.bounds];
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 44);
+    _messageView = [[MCOMessageView alloc] initWithFrame:frame];
     _messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:_messageView];
+    
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _messageView.frame.size.height + _messageView.frame.origin.y - 44, _messageView.frame.size.width, 44)];
+    [self.view addSubview:bottomView];
+    [bottomView setBackgroundColor:[UIColor whiteColor]];
+    
+    UIButton *replayBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [replayBtn setFrame:CGRectMake(10, 10, 44, 35)];
+    [replayBtn setTitle:@"回复" forState:UIControlStateNormal];
+    [replayBtn setTitle:@"回复" forState:UIControlStateHighlighted];
+    [bottomView addSubview:replayBtn];
+    [replayBtn addTarget:self action:@selector(replayMail) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *delBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [delBtn setFrame:CGRectMake(10 + 44 + 10, 10, 44, 40)];
+    [delBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [delBtn setTitle:@"删除" forState:UIControlStateHighlighted];
+    [bottomView addSubview:delBtn];
+    [delBtn addTarget:self action:@selector(deleteMail) forControlEvents:UIControlEventTouchUpInside];
+
+    [bottomView release];
     
     if (self.requestSessionType == TYPEPOP) {
         
@@ -83,8 +166,7 @@
             }else{
                 
                 NSString *str = [[[NSString alloc] initWithData:messageData encoding:NSUTF8StringEncoding] autorelease];
-                NSLog(@"str -- %@",str);
-                
+
                 MCOMessageParser * msg = [MCOMessageParser messageParserWithData:messageData];
                 [_messageView setDelegate:self];
                 [_messageView setFolder:_folder];

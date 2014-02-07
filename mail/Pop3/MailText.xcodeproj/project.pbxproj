@@ -80,6 +80,7 @@
 		CC171AFA180CE1AC006E7C75 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC171AF9180CE1AC006E7C75 /* CoreData.framework */; };
 		CC171B01180CE5FD006E7C75 /* MailModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CC171AFF180CE5FD006E7C75 /* MailModel.xcdatamodeld */; };
 		CC171B0A180CEA9C006E7C75 /* Mail.m in Sources */ = {isa = PBXBuildFile; fileRef = CC171B09180CEA9C006E7C75 /* Mail.m */; };
+		CC37F5A818A4D9DB0083602B /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */; };
 		CC3B576C17CB2A18004FFF75 /* libMailCore-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3B575917CB18AC004FFF75 /* libMailCore-ios.a */; };
 		CC3E540917D84B64008807D2 /* left_1.png in Resources */ = {isa = PBXBuildFile; fileRef = CC3E53FC17D84B64008807D2 /* left_1.png */; };
 		CC3E540A17D84B64008807D2 /* left_2.png in Resources */ = {isa = PBXBuildFile; fileRef = CC3E53FD17D84B64008807D2 /* left_2.png */; };
@@ -260,6 +261,8 @@
 		CC171B00180CE5FD006E7C75 /* MailModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MailModel.xcdatamodel; sourceTree = "<group>"; };
 		CC171B08180CEA9C006E7C75 /* Mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mail.h; sourceTree = "<group>"; };
 		CC171B09180CEA9C006E7C75 /* Mail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mail.m; sourceTree = "<group>"; };
+		CC37F5A618A4D9DB0083602B /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
+		CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Block.m"; sourceTree = "<group>"; };
 		CC3B574E17CB18AB004FFF75 /* mailcore2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mailcore2.xcodeproj; path = "mailcore2/build-mac/mailcore2.xcodeproj"; sourceTree = "<group>"; };
 		CC3E53FC17D84B64008807D2 /* left_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_1.png; sourceTree = "<group>"; };
 		CC3E53FD17D84B64008807D2 /* left_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_2.png; sourceTree = "<group>"; };
@@ -401,6 +404,8 @@
 				3E37CFC217DF471A00802137 /* Util.m */,
 				CC7046321890F25A00677FD1 /* NSString+EncodingUTF8Additions.h */,
 				CC7046331890F25A00677FD1 /* NSString+EncodingUTF8Additions.m */,
+				CC37F5A618A4D9DB0083602B /* UIAlertView+Block.h */,
+				CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				EC1C615917C50E300030309D /* Base64Transcoder.m in Sources */,
 				EC1C615A17C50E300030309D /* HSK_CFUtilities.m in Sources */,
 				EC1C615B17C50E300030309D /* NSData+Base64Additions.m in Sources */,
+				CC37F5A818A4D9DB0083602B /* UIAlertView+Block.m in Sources */,
 				EC1C615C17C50E300030309D /* NSStream+SKPSMTPExtensions.m in Sources */,
 				EC1C615D17C50E300030309D /* SKPSMTPMessage.m in Sources */,
 				EC1C616017C515E00030309D /* SetMailViewController.m in Sources */,
@@ -1025,7 +1031,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "717703A5-AB04-478D-A4E4-3EDF7D32DE15";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "18466F21-B029-4E5C-9CA3-502F24315A5D";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = $SOURCE_ROOT/;
 				WRAPPER_EXTENSION = app;
