@@ -10,5 +10,6 @@
 
 @interface ContenViewCell : UITableViewCell
 @property (retain, nonatomic) IBOutlet UITextView *contentVIew;
+@property (retain, nonatomic) IBOutlet UIWebView *webContentView;
 
 @end

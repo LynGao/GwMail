@@ -32,6 +32,7 @@
 
 -(void)dealloc
 {
+    [_messageView setDelegate:nil];
     self.popMessage = nil;
     [_session release];
     [_folder release];
@@ -60,13 +61,120 @@
     return self;
 }
 
-#pragma mark -- 回复邮件
-- (void)replayMail
+- (void)showReplayType
 {
-    SendMailViewController *send = [[SendMailViewController alloc] init];
-    [self presentViewController:send
-                       animated:YES
-                     completion:NULL];
+    UIView *bgView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [bgView setTag:20001];
+    [bgView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5]];
+    for (int i = 0; i < 3; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(self.view.frame.size.width / 2 - 100 / 2, 100 + 40 *i, 100, 40)];
+        switch (i) {
+            case 0:
+            {
+                //回复
+                [btn setTitle:@"回复" forState:UIControlStateNormal];
+                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
+                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+                [btn setTag:10001];
+                [bgView addSubview:btn];
+            }
+                break;
+            case 1:
+            {
+                //回复全部
+                [btn setTitle:@"回复全部" forState:UIControlStateNormal];
+                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
+                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+                [btn setTag:10002];
+                [bgView addSubview:btn];
+            }
+                break;
+            case 2:
+            {
+                //转发
+                [btn setTitle:@"转发" forState:UIControlStateNormal];
+                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
+                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+                [btn setTag:10003];
+                [bgView addSubview:btn];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    [self.view addSubview:bgView];
+    [bgView release];
+}
+
+#pragma mark -- 回复邮件
+- (void)replayMail:(UIButton *)sender
+{
+    NSString *innerMailText = [_messageView.webView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];
+//    NSLog(@" --- html = %@",innerMailText);
+    
+    NSLog(@"htmlss --- %@",_messageView.htmlStrings);
+    
+    SendMailViewController *sendController = [[SendMailViewController alloc] init];
+    //正文
+    NSString *str = [NSString stringWithFormat:@"<div contenteditable=true id = \"beignDiv\"><br/>%@</div>",_messageView.htmlStrings];
+    [sendController setInnerText:str];
+    
+    
+    switch (sender.tag) {
+        case 10001:
+        {
+            //回复
+            NSString *sender = nil;
+            if (self.requestSessionType == TYPEIMAP) {
+                sender = _message.header.from.mailbox;
+                
+            }else{
+                sender = self.popMailHeader.from.mailbox;
+            }
+            [sendController setSenderArray:[NSMutableArray arrayWithObjects:sender, nil]];
+            [sendController setReplayType:SINGLEREPLAY];
+        }
+            break;
+        case 10002:
+        {
+            //回复全部
+            NSString *sender = nil;
+            NSString *receiver = nil;
+            if (self.requestSessionType == TYPEIMAP) {
+                sender = _message.header.from.mailbox;
+                sender = _message.header.sender.mailbox;
+                
+                NSArray *array = _message.header.to;
+                for (MCOAddress *address in array) {
+                    NSLog(@"addr ess - %@",address.mailbox);
+                }
+                
+            }else{
+                sender = self.popMailHeader.from.mailbox;
+            }
+            [sendController setReplayType:ALLREPLAY];
+        }
+            break;
+        case 10003:
+        {
+            //转发
+            [sendController setReplayType:TRANSMIT];
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+
+    [self.navigationController pushViewController:sendController animated:YES];
+    [sendController release];
+
+
+
 }
 
 #pragma mark -- 删除邮件
@@ -86,36 +194,44 @@
                 MCOPOPOperation *op = [popsession deleteMessagesOperationWithIndexes:set];
                 [op start:^(NSError *error) {
                     if (error) {
+                        
+                        NSLog(@"删除成功!");
+                        
                         [Util showTipsLabels:self.view setMsg:@"删除失败" setOffset:0.0];
-                    }
+                    }else
+                        [self deleteSuccess];
                 }];
             }else{
-                MCOIMAPSession *session = [[[MCOIMAPSession alloc] init] autorelease];
                 
-                MCOIMAPOperation *op = [session storeFlagsOperationWithFolder:@"INBOX"
-                                                                         uids:[MCOIndexSet indexSetWithIndex:[_message uid]]
-                                                                         kind:MCOIMAPStoreFlagsRequestKindSet
-                                                                        flags:MCOMessageFlagDeleted];
+                MCOIMAPOperation * op = [_session storeFlagsOperationWithFolder:@"INBOX"
+                                                                          uids:[MCOIndexSet indexSetWithIndex:[_message uid]]
+                                                                          kind:MCOIMAPStoreFlagsRequestKindSet
+                                                                         flags:MCOMessageFlagDeleted];
+               
                 [op start:^(NSError * error) {
                     if(!error) {
-                        NSLog(@"Updated flags!");
+                        NSLog(@"删除成功!");
+                        
+                        [self deleteSuccess];
+                        
                     } else {
                        [Util showTipsLabels:self.view setMsg:@"删除失败" setOffset:0.0];
                     }
-                
-                    MCOIMAPOperation *deleteOp = [session expungeOperation:@"INBOX"];
-                    [deleteOp start:^(NSError *error) {
-                        if(error) {
-                            NSLog(@"Error expunging folder:%@", error);
-                        } else {
-                            NSLog(@"Successfully expunged folder");
-                        }
-                    }];
                 }];
             }
         }
     }];
 }
+
+//删除成功
+-(void) deleteSuccess
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    if ([self.delegate respondsToSelector:@selector(refreshMail)]) {
+        [_delegate refreshMail];
+    }
+}
+
 
 - (void)viewDidLoad {
     
@@ -133,7 +249,7 @@
     [replayBtn setTitle:@"回复" forState:UIControlStateNormal];
     [replayBtn setTitle:@"回复" forState:UIControlStateHighlighted];
     [bottomView addSubview:replayBtn];
-    [replayBtn addTarget:self action:@selector(replayMail) forControlEvents:UIControlEventTouchUpInside];
+    [replayBtn addTarget:self action:@selector(showReplayType) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *delBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [delBtn setFrame:CGRectMake(10 + 44 + 10, 10, 44, 40)];
@@ -164,9 +280,6 @@
             if (error) {
                 return ;
             }else{
-                
-                NSString *str = [[[NSString alloc] initWithData:messageData encoding:NSUTF8StringEncoding] autorelease];
-
                 MCOMessageParser * msg = [MCOMessageParser messageParserWithData:messageData];
                 [_messageView setDelegate:self];
                 [_messageView setFolder:_folder];

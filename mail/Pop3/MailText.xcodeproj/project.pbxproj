@@ -80,6 +80,7 @@
 		CC171AFA180CE1AC006E7C75 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC171AF9180CE1AC006E7C75 /* CoreData.framework */; };
 		CC171B01180CE5FD006E7C75 /* MailModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CC171AFF180CE5FD006E7C75 /* MailModel.xcdatamodeld */; };
 		CC171B0A180CEA9C006E7C75 /* Mail.m in Sources */ = {isa = PBXBuildFile; fileRef = CC171B09180CEA9C006E7C75 /* Mail.m */; };
+		CC37DE2918A8A6BE0029E31F /* SendByMcoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37DE2818A8A6BE0029E31F /* SendByMcoViewController.m */; };
 		CC37F5A818A4D9DB0083602B /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */; };
 		CC3B576C17CB2A18004FFF75 /* libMailCore-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3B575917CB18AC004FFF75 /* libMailCore-ios.a */; };
 		CC3E540917D84B64008807D2 /* left_1.png in Resources */ = {isa = PBXBuildFile; fileRef = CC3E53FC17D84B64008807D2 /* left_1.png */; };
@@ -261,6 +262,8 @@
 		CC171B00180CE5FD006E7C75 /* MailModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MailModel.xcdatamodel; sourceTree = "<group>"; };
 		CC171B08180CEA9C006E7C75 /* Mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mail.h; sourceTree = "<group>"; };
 		CC171B09180CEA9C006E7C75 /* Mail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mail.m; sourceTree = "<group>"; };
+		CC37DE2718A8A6BE0029E31F /* SendByMcoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendByMcoViewController.h; sourceTree = "<group>"; };
+		CC37DE2818A8A6BE0029E31F /* SendByMcoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendByMcoViewController.m; sourceTree = "<group>"; };
 		CC37F5A618A4D9DB0083602B /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
 		CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Block.m"; sourceTree = "<group>"; };
 		CC3B574E17CB18AB004FFF75 /* mailcore2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mailcore2.xcodeproj; path = "mailcore2/build-mac/mailcore2.xcodeproj"; sourceTree = "<group>"; };
@@ -365,6 +368,7 @@
 		3E37CFBA17DF458900802137 /* send */ = {
 			isa = PBXGroup;
 			children = (
+				CC37DE2218A8A6980029E31F /* sendByMCO */,
 				3E37CFCB17DF5A3900802137 /* view */,
 				3E37CFBC17DF459B00802137 /* controller */,
 				3E37CFBB17DF459500802137 /* biz */,
@@ -558,6 +562,15 @@
 				3EFD7B3317E5958400B21F13 /* email_not_readed.png */,
 			);
 			name = inbox;
+			sourceTree = "<group>";
+		};
+		CC37DE2218A8A6980029E31F /* sendByMCO */ = {
+			isa = PBXGroup;
+			children = (
+				CC37DE2718A8A6BE0029E31F /* SendByMcoViewController.h */,
+				CC37DE2818A8A6BE0029E31F /* SendByMcoViewController.m */,
+			);
+			name = sendByMCO;
 			sourceTree = "<group>";
 		};
 		CC3B574F17CB18AB004FFF75 /* Products */ = {
@@ -918,6 +931,7 @@
 				3EFD7B2B17E54DDD00B21F13 /* ReceiveViewController.m in Sources */,
 				3EFD7B3817E595C800B21F13 /* InBoxCell.m in Sources */,
 				3EFD7B3F17E5ACD400B21F13 /* ReceiveDetailViewController.mm in Sources */,
+				CC37DE2918A8A6BE0029E31F /* SendByMcoViewController.m in Sources */,
 				3E545B8B180C55AF00184ADB /* RubbishBoxViewController.m in Sources */,
 				3EFD7B4217E5B86D00B21F13 /* MCOMessageView.mm in Sources */,
 				CC7046341890F25A00677FD1 /* NSString+EncodingUTF8Additions.m in Sources */,

@@ -13,6 +13,10 @@
 @protocol MCOMessageViewDelegate;
 
 @interface MCOMessageView : UIView <UIWebViewDelegate>
+{
+    UIWebView * _webView;
+}
+@property (nonatomic, strong) UIWebView * webView;
 
 @property (nonatomic, copy) NSString * folder;
 @property (nonatomic, strong) MCOAbstractMessage * message;
@@ -22,8 +26,15 @@
 @property (nonatomic, assign) BOOL prefetchIMAPImagesEnabled;
 @property (nonatomic, assign) BOOL prefetchIMAPAttachmentsEnabled;
 
+
 //add by gwj
+
+@property (nonatomic, copy) NSMutableString *htmlStrings;
+
 - (void)changeTitleById:(NSString *)fjId;
+
+- (NSString *)getContentHtmlString;
+
 @end
 
 @protocol MCOMessageViewDelegate <NSObject>

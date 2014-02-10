@@ -64,7 +64,7 @@ pre {\
 @end
 
 @implementation MCOMessageView {
-    UIWebView * _webView;
+    
     NSString * _folder;
     MCOAbstractMessage * _message;
     id <MCOMessageViewDelegate> _delegate;
@@ -76,6 +76,8 @@ pre {\
 @synthesize delegate = _delegate;
 @synthesize prefetchIMAPImagesEnabled = _prefetchIMAPImagesEnabled;
 @synthesize prefetchIMAPAttachmentsEnabled = _prefetchIMAPAttachmentsEnabled;
+
+@synthesize webView = _webView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -190,7 +192,7 @@ pre {\
      @"<body>%@</body></html>", mainJavascript, mainStyle,self.htmlString];
 
     //end
-    
+    self.htmlStrings = self.htmlString;
 	[_webView loadHTMLString:html baseURL:nil];
 }
 
@@ -516,5 +518,10 @@ pre {\
     
 }
 
+
+- (NSString *)getContentHtmlString
+{
+    return self.htmlStrings;
+}
 
 @end

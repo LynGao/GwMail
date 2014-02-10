@@ -94,4 +94,10 @@ typedef enum
     SENDBOXMAIL = 2
 }MailSaveType;
 
+typedef enum{
+    SINGLEREPLAY = 0,
+    ALLREPLAY,
+    TRANSMIT
+}RelayType;
+
 @end

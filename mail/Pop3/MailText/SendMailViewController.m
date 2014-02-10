@@ -29,6 +29,8 @@
 //    SKPSMTPMessage *_sender;
     
     MailSaveType _showType;
+    
+    UIWebView *web;
 }
 
 @property (nonatomic,retain) NSMutableArray *sendPartArray;
@@ -73,6 +75,18 @@
     
     self.sendPartArray = [[[NSMutableArray alloc] init] autorelease];
     self.imgArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(print)];
+    self.navigationItem.rightBarButtonItem = item;
+    web = [[UIWebView alloc] initWithFrame:self.view.bounds];
+//    [web loadHTMLString:self.innerText baseURL:nil];
+//    [self.view addSubview:web];
+}
+
+- (void)print
+{
+    NSLog(@"web %@",[web stringByEvaluatingJavaScriptFromString:@"document.body.innerText"]);
 }
 
 - (void)viewDidUnload {
@@ -145,7 +159,6 @@
     
     [self showLoadingWithTips:@"正在发送"];
     
-//    [self reBuildSender];
     
     SKPSMTPMessage *_sender = [[SKPSMTPMessage alloc] init];
     
@@ -158,8 +171,6 @@
     _sender.requiresAuth = YES;
     _sender.wantsSecure = YES;
     _sender.subject = sub;
-
-     NSLog(@" subject = %@",sub);
     
     NSInteger contRow = 2;
     if ((_ccFlag && !_fjFlag) || (!_ccFlag && _fjFlag)) {
@@ -170,7 +181,8 @@
     }
     
     ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
-    NSString *content = contentCell.contentVIew.text;
+//    NSString *content = contentCell.contentVIew.text;
+    NSString *content = [contentCell.webContentView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];;
     if (content.length == 0) {
         content = @"";
     }
@@ -198,6 +210,8 @@
     [_sender send];
     
     [_sender release];
+    
+    
 }
 
 - (void)clearParts
@@ -605,6 +619,9 @@
         
         [contentCell.contentVIew setDelegate:self];
         [contentCell.contentVIew setReturnKeyType:UIReturnKeyDone];
+        NSString *divs = @"<div contenteditable=true></div>";
+        [contentCell.webContentView loadHTMLString:divs baseURL:nil];
+        
     }
 
     

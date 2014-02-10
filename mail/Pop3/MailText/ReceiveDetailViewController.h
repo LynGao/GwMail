@@ -13,6 +13,12 @@
 @class MCOIMAPAsyncSession;
 @class MCOMAPMessage;
 
+@protocol ReceiveDetailDelegate <NSObject>
+
+- (void)refreshMail;
+
+@end
+
 @interface ReceiveDetailViewController : BaseViewController
 {
     IBOutlet MCOMessageView * _messageView;
@@ -32,4 +38,8 @@
 @property (nonatomic, assign) SessionType requestSessionType;
 @property (nonatomic, retain) MCOPOPSession *popSession;
 @property (nonatomic, assign) unsigned int popIndex;
+
+@property (nonatomic, assign) id<ReceiveDetailDelegate> delegate;
+
+@property (nonatomic, retain) MCOMessageHeader *popMailHeader;
 @end

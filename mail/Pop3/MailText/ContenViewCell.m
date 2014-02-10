@@ -28,6 +28,7 @@
 
 - (void)dealloc {
     [_contentVIew release];
+    [_webContentView release];
     [super dealloc];
 }
 @end

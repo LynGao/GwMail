@@ -23,7 +23,7 @@
 #define POPHEADERKEY @"popHeaderKey"
 #define POPINDEX @"popIndex"
 
-@interface ReceiveViewController ()
+@interface ReceiveViewController ()<ReceiveDetailDelegate>
 {
     UIWebView *_web;
     NSInteger _totalMailCount;//总邮件
@@ -558,6 +558,7 @@
             vc.folder = @"INBOX";
             vc.message = msg;
             vc.session = [[AppDelegate getDelegate] imapSession];
+            [vc setDelegate:self];
             [self.navigationController pushViewController:vc animated:YES];
             [vc release];
             
@@ -595,8 +596,13 @@
         ReceiveDetailViewController *vc = [[ReceiveDetailViewController alloc] init];
         vc.folder = @"INBOX";
         [vc setRequestSessionType:TYPEPOP];
+        [vc setDelegate:self];
         vc.popIndex = [[self.resultMailList[indexPath.row] objectForKey:POPINDEX] unsignedIntValue];
-        vc.popSession = [[AppDelegate getDelegate] popSession];
+//        vc.popSession = [[AppDelegate getDelegate] popSession];
+        
+        MCOMessageHeader *message = [self.resultMailList[indexPath.row] objectForKey:POPHEADERKEY];
+        vc.popMailHeader = message;
+        
         [self.navigationController pushViewController:vc animated:YES];
         [vc release];
 
@@ -656,7 +662,14 @@
 
     [_refreshTableView egoRefreshScrollViewDidEndDragging:scrollView];
 
+}
+
+#pragma mark detailDelegate
+- (void)refreshMail
+{
+    [_refreshTableView showLoading:_mainTable];
     
+    [self reloadTableViewDataSource];
 }
 
 

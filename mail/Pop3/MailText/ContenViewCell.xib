@@ -24,7 +24,7 @@
                         <rect key="frame" x="60" y="0.0" width="240" height="190"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ttttttt1" id="5">
+                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ttttttt1" id="5">
                         <rect key="frame" x="64" y="3" width="232" height="183"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -32,10 +32,16 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <webView contentMode="scaleToFill" id="8S8-fD-UP2">
+                        <rect key="frame" x="64" y="3" width="232" height="183"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </webView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="contentVIew" destination="5" id="26"/>
+                <outlet property="webContentView" destination="8S8-fD-UP2" id="GXb-ca-XZM"/>
             </connections>
         </tableViewCell>
     </objects>
