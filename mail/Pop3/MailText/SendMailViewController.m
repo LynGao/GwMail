@@ -19,6 +19,7 @@
 
 #import "AppDelegate.h"
 #import "Mail.h"
+#import "SendBiz.h"
 
 @interface SendMailViewController ()
 {
@@ -133,6 +134,86 @@
 {
     _ccFlag = !_ccFlag;
     [_mainTable reloadData];
+}
+
+#pragma mark -- send mail by MCO
+- (IBAction)sendMailByMco
+{
+    NSInteger row = 1;
+    if (_ccFlag) {
+        row = 2;
+    }
+    
+    ReceiveCell *cell = (ReceiveCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *receive = cell.receiveTextField.text;
+    if (receive.length == 0) {
+        [Util showTipsLabels:self.view setMsg:@"收件人不能为空" setOffset:45];
+        return;
+    }
+    
+    SubjectCell *subCell = (SubjectCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    NSString *sub = subCell.subjectTextField.text;
+    if (sub.length == 0) {
+        [Util showTipsLabels:self.view setMsg:@"主题不能为空" setOffset:45];
+        return;
+    }
+    
+    [self showLoadingWithTips:@"正在发送"];
+    
+    NSInteger contRow = 2;
+    if ((_ccFlag && !_fjFlag) || (!_ccFlag && _fjFlag)) {
+        contRow = 3;
+    }
+    if (_ccFlag && _fjFlag) {
+        contRow = 4;
+    }
+    
+    
+    //正文内容
+    ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
+    NSString *content = [contentCell.webContentView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];;
+    if (content.length == 0) {
+        content = @"";
+    }
+    
+    MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
+    [[builder header] setFrom:[MCOAddress addressWithDisplayName:nil mailbox:[Util getObjFromUserDefualt:SENDER]]];
+    NSMutableArray *to = [[NSMutableArray alloc] init];
+    
+    for(NSString *toAddress in [receive componentsSeparatedByString:@";"]) {
+        NSLog(@"to addresss -- %@", toAddress);
+        MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
+        [to addObject:newAddress];
+    }
+    [[builder header] setTo:to];
+   
+    if (_ccFlag) {
+        CCCell *cc = (CCCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        NSString *ccStr = cc.inputTextField.text;
+        NSArray *ccArray = [ccStr componentsSeparatedByString:@";"];
+        NSLog(@"cc Array = %@",ccArray);
+        NSMutableArray *cCAddressArray = [[NSMutableArray alloc] init];
+        for(NSString *ccAddress in ccArray) {
+                MCOAddress *newAddress = [MCOAddress addressWithMailbox:ccAddress];
+                [cCAddressArray addObject:newAddress];
+        }
+        
+        [[builder header] setCc:cCAddressArray];
+    }
+    
+    [[builder header] setSubject:sub];
+    [builder setTextBody:content];
+  
+    NSData * rfc822Data = [builder data];
+    
+    SendBiz *sn = [[SendBiz alloc] init];
+    [sn sendMail:rfc822Data
+         success:^{
+             [self messageSent:nil];
+        }
+            fail:^{
+                [self messageFailed:nil error:NULL];
+    }];
 }
 
 #pragma mark send mail

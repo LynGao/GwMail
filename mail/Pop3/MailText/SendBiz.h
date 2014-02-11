@@ -8,9 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+#include <MailCore/MailCore.h>
+
+typedef void(^sendSuccessBlock)();
+
+typedef void(^sendFailBlock)();
+
 @interface SendBiz : NSObject
 
-
-- (NSData *)getPicture;
+- (void)sendMail:(NSData *)mailData
+         success:(sendSuccessBlock)success
+            fail:(sendFailBlock)fail;
 
 @end
