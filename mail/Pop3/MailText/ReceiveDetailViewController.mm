@@ -65,10 +65,14 @@
 {
     UIView *bgView = [[UIView alloc] initWithFrame:self.view.bounds];
     [bgView setTag:20001];
-    [bgView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5]];
+    [bgView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.7]];
+    [bgView.layer setCornerRadius:1];
     for (int i = 0; i < 3; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setFrame:CGRectMake(self.view.frame.size.width / 2 - 100 / 2, 100 + 40 *i, 100, 40)];
+        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    
         switch (i) {
             case 0:
             {
@@ -112,29 +116,28 @@
 #pragma mark -- 回复邮件
 - (void)replayMail:(UIButton *)sender
 {
-    NSString *innerMailText = [_messageView.webView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];
-//    NSLog(@" --- html = %@",innerMailText);
-    
-    NSLog(@"htmlss --- %@",_messageView.htmlStrings);
-    
+//    NSString *innerMailText = [_messageView.webView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];
+
     SendMailViewController *sendController = [[SendMailViewController alloc] init];
     //正文
-    NSString *str = [NSString stringWithFormat:@"<div contenteditable=true id = \"beignDiv\"><br/>%@</div>",_messageView.htmlStrings];
+    NSString *str = [NSString stringWithFormat:@"<div contenteditable=true id = \"beignDiv\"><br/><div>---来自随心邮苹果客户端</div><br/>%@</div>",_messageView.htmlStrings];
     [sendController setInnerText:str];
-    
     
     switch (sender.tag) {
         case 10001:
         {
             //回复
             NSString *sender = nil;
+            NSString *subject = nil;
             if (self.requestSessionType == TYPEIMAP) {
                 sender = _message.header.from.mailbox;
-                
+                subject = _message.header.subject;
             }else{
                 sender = self.popMailHeader.from.mailbox;
+                subject = self.popMessage.header.subject;
             }
-            [sendController setSenderArray:[NSMutableArray arrayWithObjects:sender, nil]];
+            [sendController setSubjectString:subject];
+            [sendController setReceiversString:sender];
             [sendController setReplayType:SINGLEREPLAY];
         }
             break;
@@ -143,18 +146,28 @@
             //回复全部
             NSString *sender = nil;
             NSString *receiver = nil;
+            NSString *subject = nil;
             if (self.requestSessionType == TYPEIMAP) {
+                subject = _message.header.subject;
                 sender = _message.header.from.mailbox;
-                sender = _message.header.sender.mailbox;
-                
+                receiver = sender;
                 NSArray *array = _message.header.to;
-                for (MCOAddress *address in array) {
-                    NSLog(@"addr ess - %@",address.mailbox);
+                for (MCOAddress *receiverAddress in array)
+                {
+                   receiver = [receiver stringByAppendingString:[NSString stringWithFormat:@";%@",receiverAddress.mailbox]];
                 }
-                
             }else{
                 sender = self.popMailHeader.from.mailbox;
+                subject = self.popMessage.header.subject;
+                receiver = sender;
+                NSArray *array = self.popMessage.header.to;
+                for (MCOAddress *receiverAddress in array)
+                {
+                    receiver = [receiver stringByAppendingString:[NSString stringWithFormat:@";%@",receiverAddress.mailbox]];
+                }
             }
+            [sendController setSubjectString:subject];
+            [sendController setReceiversString:receiver];
             [sendController setReplayType:ALLREPLAY];
         }
             break;
@@ -290,6 +303,9 @@
         }];
         
     }else{
+        
+        [self showLoadingWithTips:@"正在加载中..."];
+        
         if (![[NSUserDefaults standardUserDefaults] boolForKey:@"FetchFullMessageEnabled"]) {
             [_messageView setDelegate:self];
             [_messageView setFolder:_folder];
@@ -321,7 +337,7 @@
 - (void) setMessage:(MCOIMAPMessage *)message
 {
     
-    NSArray *array = [_message attachments];
+//    NSArray *array = [_message attachments];
 	MCLog("set message : %s", message.description.UTF8String);
     for(MCOOperation * op in _ops) {
         [op cancel];
@@ -467,6 +483,11 @@ typedef void (^DownloadCallback)(NSError * error);
         MCLog("progress content: %u/%u", current, maximum);
         
         NSLog(@"progress content: %u/%u", current, maximum);
+        
+        if (current == maximum) {
+            [self hiddenHud];
+        }
+        
     }];
     if (op != nil) {
         [_ops addObject:op];

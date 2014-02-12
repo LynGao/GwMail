@@ -60,7 +60,7 @@
                     <rect key="frame" x="54" y="191" width="24" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="zhgmail8" minimumFontSize="17" id="10">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="jiAN147896325" minimumFontSize="17" id="10">
                     <rect key="frame" x="86" y="192" width="184" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" red="0.40784317255020142" green="0.63529413938522339" blue="0.062745101749897003" alpha="1" colorSpace="deviceRGB"/>
@@ -70,7 +70,7 @@
                         <outlet property="delegate" destination="-1" id="31"/>
                     </connections>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="testmail@zhnet.net" minimumFontSize="17" id="aO6-XO-P1d">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="915288796@qq.com" minimumFontSize="17" id="aO6-XO-P1d">
                     <rect key="frame" x="86" y="153" width="184" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" red="0.40784317260000003" green="0.63529413940000001" blue="0.062745101750000004" alpha="1" colorSpace="deviceRGB"/>

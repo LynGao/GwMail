@@ -21,6 +21,8 @@
     smtpSession.port = 465;
     smtpSession.username = [Util getObjFromUserDefualt:SENDER];
     smtpSession.password = [Util getObjFromUserDefualt:SENDER_PWD];
+    
+    NSLog(@"--- %@ %@ %@ ",[Util getObjFromUserDefualt:RECEIVE_SERVER],[Util getObjFromUserDefualt:SENDER],[Util getObjFromUserDefualt:SENDER_PWD]);
     smtpSession.connectionType = MCOConnectionTypeTLS;
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:mailData];
         [sendOperation start:^(NSError *error) {

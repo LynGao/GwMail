@@ -136,6 +136,19 @@
     [_mainTable reloadData];
 }
 
+#pragma mark -- setMethods
+
+- (void)setReceiversString:(NSString *)receiversString
+{
+    if (![receiversString isEqualToString:_receiversString]) {
+        [_receiversString release];
+        _receiversString = nil;
+    }
+    _receiversString = [receiversString copy];
+}
+
+
+
 #pragma mark -- send mail by MCO
 - (IBAction)sendMailByMco
 {
@@ -301,21 +314,43 @@
 }
 
 
-
+#pragma mark -- 删除内容
 - (IBAction)clearText:(id)sender
 {
   
-    NSInteger contRow = 2;
-    if ((_ccFlag && !_fjFlag) || (!_ccFlag && _fjFlag)) {
-        contRow = 3;
-    }
-    if (_ccFlag && _fjFlag) {
-        contRow = 4;
-    }
+//    NSInteger contRow = 2;
+//    if ((_ccFlag && !_fjFlag) || (!_ccFlag && _fjFlag)) {
+//        contRow = 3;
+//    }
+//    if (_ccFlag && _fjFlag) {
+//        contRow = 4;
+//    }
+//    
+//    ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
+//    [contentCell.contentVIew setText:@""];
     
-    ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
-    [contentCell.contentVIew setText:@""];
-
+    self.innerText = @"<div contenteditable=true id = \"beignDiv\"><br/><div>---来自随心邮苹果客户端</div><br/></div>";
+    self.receiversString = nil;
+    self.subjectString = nil;
+    
+    [_mainTable removeFromSuperview];
+    
+    _rowCount = 3;
+    _ccFlag = NO;
+    _fjFlag = NO;
+    [self.imgArray removeAllObjects];
+    
+    [_mainTable setDataSource:nil];
+    [_mainTable setDelegate:nil];
+    [_mainTable release];
+    _mainTable = nil;
+    
+    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStylePlain];
+    [_mainTable setDelegate:self];
+    [_mainTable setDataSource:self];
+    _mainTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.view addSubview:_mainTable];
 }
 
 #pragma mark 保存
@@ -670,6 +705,10 @@
         [cell.receiveTextField setDelegate:self];
         [cell.receiveTextField setReturnKeyType:UIReturnKeyDone];
     }
+    
+    if (self.receiversString != nil) {
+        [cell.receiveTextField setText:_receiversString];
+    }
 
     static NSString *subjcet = @"subjcet";
     SubjectCell *subCell = (SubjectCell *)[tableView dequeueReusableCellWithIdentifier:subjcet];
@@ -691,6 +730,10 @@
         [subCell.subjectTextField setReturnKeyType:UIReturnKeyDone];
     
     }
+    
+    if (self.subjectString) {
+        [subCell.subjectTextField setText:self.subjectString];
+    }
   
     static NSString *content = @"content";
     ContenViewCell *contentCell = (ContenViewCell *)[tableView dequeueReusableCellWithIdentifier:content];
@@ -700,11 +743,8 @@
         
         [contentCell.contentVIew setDelegate:self];
         [contentCell.contentVIew setReturnKeyType:UIReturnKeyDone];
-        NSString *divs = @"<div contenteditable=true></div>";
-        [contentCell.webContentView loadHTMLString:divs baseURL:nil];
-        
     }
-
+    [contentCell.webContentView loadHTMLString:self.innerText baseURL:nil];
     
     CCCell *ccCells = nil;
     if (_ccFlag) {
@@ -779,5 +819,6 @@
         }
     }
 }
+
 
 @end

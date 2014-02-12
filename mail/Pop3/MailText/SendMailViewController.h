@@ -11,10 +11,12 @@
 #import "BaseViewController.h"
 @interface SendMailViewController : BaseViewController <UITextFieldDelegate,SKPSMTPMessageDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, retain) NSMutableArray *senderArray;//发件人数组
-
 @property (nonatomic, assign) RelayType replayType;
 
 @property (nonatomic, copy) NSString *innerText;
+
+@property (nonatomic, copy) NSString *receiversString;//收件人数组
+
+@property (nonatomic, copy) NSString *subjectString;
 
 @end
