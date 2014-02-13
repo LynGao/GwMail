@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Util.h"
 #import "SKPSMTPMessage.h"
+#import "SendMailViewController.h"
 
 @interface ReadViewController ()<SKPSMTPMessageDelegate>
 {
@@ -61,7 +62,11 @@
 
 - (void)loadData
 {
-    _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height - 44)];
+    CGFloat delta = 0;
+    if (IOS7_OR_LATER) {
+        delta = 20;
+    }
+    _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height - 44 - delta)];
     [_webView setDelegate:self];
     [self.view addSubview:_webView];
     
@@ -106,12 +111,12 @@
         [_firstBtn addTarget:self action:@selector(moveToRubbish) forControlEvents:UIControlEventTouchUpInside];
         [_secBtn addTarget:self action:@selector(removeRubbish) forControlEvents:UIControlEventTouchUpInside];
             [_secBtn setTitle:@"彻底删除" forState:UIControlStateNormal];
-        [_thirdBtn addTarget:self action:@selector(ccToOther) forControlEvents:UIControlEventTouchUpInside];
+        [_thirdBtn addTarget:self action:@selector(goToEidtMail) forControlEvents:UIControlEventTouchUpInside];
     }else{
         [_firstBtn addTarget:self action:@selector(removeRubbish) forControlEvents:UIControlEventTouchUpInside];
         [_secBtn setTitle:@"恢复" forState:UIControlStateNormal];
         [_secBtn addTarget:self action:@selector(recovermail) forControlEvents:UIControlEventTouchUpInside];
-        [_thirdBtn addTarget:self action:@selector(ccToOther) forControlEvents:UIControlEventTouchUpInside];
+        [_thirdBtn addTarget:self action:@selector(goToEidtMail) forControlEvents:UIControlEventTouchUpInside];
 
     }
 }
@@ -183,6 +188,35 @@
         [Util showTipsLabels:self.view setMsg:@"彻底删除成功" setOffset:0];
     }else
         NSLog(@"save -- fial %@",error);
+}
+
+- (void)goToEidtMail
+{
+  
+        
+    NSString *nibName = @"SendMailViewController";
+    if (iPhone5) {
+        nibName = @"SendMailViewController_5";
+    }
+    SendMailViewController *sendController = [[SendMailViewController alloc] initWithNibName:nibName bundle:nil];
+    //正文
+    NSString *str = [NSString stringWithFormat:@"<div contenteditable=true id = \"beignDiv\"><br/><br/>%@</div>",_mail.mail_content];
+    [sendController setInnerText:str];
+    
+    //回复
+    NSString *sender = nil;
+    NSString *subject = nil;
+ 
+    sender = _mail.mail_to;
+    subject = _mail.mail_title;
+    NSString *ccTo = _mail.mail_cc;
+ 
+    [sendController setSubjectString:subject];
+    [sendController setReceiversString:sender];
+    [sendController setReplayType:SINGLEREPLAY];
+    
+    [self.navigationController pushViewController:sendController animated:YES];
+    [sendController release];
 }
 
 - (void)ccToOther

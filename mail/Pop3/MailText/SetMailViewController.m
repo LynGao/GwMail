@@ -52,7 +52,7 @@
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height - 44 - 44)];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setShowsVerticalScrollIndicator:NO];
-    [_scrollView setBackgroundColor:[UIColor clearColor]];
+    [_scrollView setBackgroundColor:[UIColor whiteColor]];
     
     [self.view addSubview:_scrollView];
     
@@ -133,7 +133,11 @@
     
     //蓝色头部
     CGFloat orginY = IS_IPAD ? self.view.frame.size.width : self.view.frame.size.height;
-    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, orginY - 44 - 44 - 20, 320, 44)] autorelease];
+    CGFloat deltaY = 0;
+    if (IOS7_OR_LATER) {
+        deltaY = 20;
+    }
+    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, orginY - 44 - 44 - deltaY, 320, 44)] autorelease];
     [headerView setBackgroundColor:[UIColor colorWithRed:LIGHT_BLUE_R / 255.0 green:LIGHT_BLUE_G / 255.0 blue:LIGHT_BLUE_B / 255.0 alpha:1.0]];
 
     UIButton *btnu = [[UIButton alloc] initWithFrame:CGRectMake(10, 11, 80, 25)];
@@ -400,7 +404,11 @@
 {
     [UIView animateWithDuration:0.3 animations:^{
         CGRect frame = self.view.frame;
-        frame.origin.y = 0 - 210;
+        CGFloat deta = 0;
+        if (IOS7_OR_LATER) {
+            deta = 20 + 44;
+        }
+        frame.origin.y = 0 - 210 + deta;
         [self.view setFrame:frame];
     }];
 }
@@ -409,7 +417,11 @@
 {
     [UIView animateWithDuration:0.3 animations:^{
         CGRect frame = self.view.frame;
-        frame.origin.y = 0;
+        CGFloat deta = 0;
+        if (IOS7_OR_LATER) {
+            deta = 20 + 44;
+        }
+        frame.origin.y = 0 + deta;
         [self.view setFrame:frame];
     }];
 }
@@ -419,7 +431,11 @@
     [textField resignFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{
         CGRect frame = self.view.frame;
-        frame.origin.y = 0;
+        CGFloat deta = 0;
+        if (IOS7_OR_LATER) {
+            deta = 20 + 44;
+        }
+        frame.origin.y = 0 + deta;
         [self.view setFrame:frame];
     }];
 

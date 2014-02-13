@@ -31,7 +31,6 @@
     
     MailSaveType _showType;
     
-    UIWebView *web;
 }
 
 @property (nonatomic,retain) NSMutableArray *sendPartArray;
@@ -42,8 +41,9 @@
 
 - (void)dealloc
 {
-//    [_sender release];
     [_imgArray release];
+    [_mainTable setDelegate:nil];
+    [_mainTable setDataSource:nil];
     [_mainTable release];
     [_sendPartArray release];
     [super dealloc];
@@ -66,8 +66,15 @@
     _rowCount = 3;
     
     self.title = @"邮件编辑";
+    if (self.innerText == nil) {
+          self.innerText = @"<div contenteditable=true id = \"beignDiv\"><br/><div>---来自随心邮苹果客户端</div><br/></div>";
+    }
     
-    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStylePlain];
+    CGFloat delta = 0;
+    if (IOS7_OR_LATER) {
+        delta = 20;
+    }
+    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44 - delta) style:UITableViewStylePlain];
     [_mainTable setDelegate:self];
     [_mainTable setDataSource:self];
     _mainTable.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -76,18 +83,7 @@
     
     self.sendPartArray = [[[NSMutableArray alloc] init] autorelease];
     self.imgArray = [[[NSMutableArray alloc] init] autorelease];
-    
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(print)];
-    self.navigationItem.rightBarButtonItem = item;
-    web = [[UIWebView alloc] initWithFrame:self.view.bounds];
-//    [web loadHTMLString:self.innerText baseURL:nil];
-//    [self.view addSubview:web];
-}
 
-- (void)print
-{
-    NSLog(@"web %@",[web stringByEvaluatingJavaScriptFromString:@"document.body.innerText"]);
 }
 
 - (void)viewDidUnload {
@@ -345,7 +341,11 @@
     [_mainTable release];
     _mainTable = nil;
     
-    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStylePlain];
+    CGFloat delta = 0;
+    if (IOS7_OR_LATER) {
+        delta = 20;
+    }
+    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44 - delta) style:UITableViewStylePlain];
     [_mainTable setDelegate:self];
     [_mainTable setDataSource:self];
     _mainTable.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -386,8 +386,17 @@
     if (_ccFlag && _fjFlag) {
         contRow = 4;
     }
+//    ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
+//    NSString *content = contentCell.contentVIew.text;
+    
     ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
-    NSString *content = contentCell.contentVIew.text;
+    //    NSString *content = contentCell.contentVIew.text;
+    NSString *content = [contentCell.webContentView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];;
+    if (content.length == 0) {
+        content = @"";
+    }
+
+    
  
     AppDelegate *delegate = [AppDelegate getDelegate];
     NSManagedObjectContext *context = [delegate objContext];
@@ -469,10 +478,13 @@
     
     [self reBuildSender];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self saveToTemp:nil];
     });
+    
+//    });
 }
 
 - (void)reBuildSender

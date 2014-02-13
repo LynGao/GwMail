@@ -98,6 +98,8 @@
 		CC7046341890F25A00677FD1 /* NSString+EncodingUTF8Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7046331890F25A00677FD1 /* NSString+EncodingUTF8Additions.m */; };
 		CC77D8DB1888D40B0044CE42 /* PopMail.m in Sources */ = {isa = PBXBuildFile; fileRef = CC77D8DA1888D40B0044CE42 /* PopMail.m */; };
 		CCBA00DE1887BD070044B43F /* ReceiveBiz.m in Sources */ = {isa = PBXBuildFile; fileRef = CCBA00DD1887BD070044B43F /* ReceiveBiz.m */; };
+		CCF8971E18ACB6E200EC789C /* SendMailViewController_5.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF8971D18ACB6E200EC789C /* SendMailViewController_5.xib */; };
+		CCF8972018ACC3AD00EC789C /* ReadViewController_5.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCF8971F18ACC3AC00EC789C /* ReadViewController_5.xib */; };
 		EC1C610917C44DD00030309D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC1C610817C44DD00030309D /* UIKit.framework */; };
 		EC1C610B17C44DD00030309D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC1C610A17C44DD00030309D /* Foundation.framework */; };
 		EC1C610D17C44DD00030309D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC1C610C17C44DD00030309D /* CoreGraphics.framework */; };
@@ -286,6 +288,8 @@
 		CC77D8DA1888D40B0044CE42 /* PopMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopMail.m; sourceTree = "<group>"; };
 		CCBA00DC1887BD070044B43F /* ReceiveBiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiveBiz.h; sourceTree = "<group>"; };
 		CCBA00DD1887BD070044B43F /* ReceiveBiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiveBiz.m; sourceTree = "<group>"; };
+		CCF8971D18ACB6E200EC789C /* SendMailViewController_5.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMailViewController_5.xib; sourceTree = "<group>"; };
+		CCF8971F18ACC3AC00EC789C /* ReadViewController_5.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadViewController_5.xib; sourceTree = "<group>"; };
 		EC1C610517C44DD00030309D /* MailText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC1C610817C44DD00030309D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		EC1C610A17C44DD00030309D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -391,6 +395,7 @@
 				EC1C614B17C4F5A70030309D /* SendMailViewController.h */,
 				EC1C614C17C4F5A70030309D /* SendMailViewController.m */,
 				3E98E27217DE37D2007E9E26 /* SendMailViewController.xib */,
+				CCF8971D18ACB6E200EC789C /* SendMailViewController_5.xib */,
 				3E545B7D180C555F00184ADB /* SendBoxViewController.h */,
 				3E545B7E180C555F00184ADB /* SendBoxViewController.m */,
 			);
@@ -689,6 +694,7 @@
 				3EAB11C6180D906900B0821B /* ReadViewController.h */,
 				3EAB11C7180D906900B0821B /* ReadViewController.m */,
 				3EAB11CE180D936400B0821B /* ReadViewController.xib */,
+				CCF8971F18ACC3AC00EC789C /* ReadViewController_5.xib */,
 				3EAA40CC17E5C3A800438ED9 /* function */,
 				3E1750E317D6306A0012C1A0 /* Base */,
 				3E1750DB17D6305C0012C1A0 /* ppReveler */,
@@ -836,6 +842,7 @@
 				3E7083A81835345D00B7379B /* InfoPlist.strings in Resources */,
 				3EB97503180C4AF10092D720 /* send_input.png in Resources */,
 				EC1C611B17C44DD00030309D /* Default.png in Resources */,
+				CCF8971E18ACB6E200EC789C /* SendMailViewController_5.xib in Resources */,
 				3E545B9B180C5C4C00184ADB /* unSelected.png in Resources */,
 				EC1C611D17C44DD00030309D /* Default@2x.png in Resources */,
 				EC1C611F17C44DD00030309D /* Default-568h@2x.png in Resources */,
@@ -853,6 +860,7 @@
 				CC3E540F17D84B64008807D2 /* 邮箱写信界面_15.png in Resources */,
 				CC3E541017D84B64008807D2 /* 邮箱写信界面_17.png in Resources */,
 				CC3E541117D84B64008807D2 /* 邮箱写信界面_19.png in Resources */,
+				CCF8972018ACC3AD00EC789C /* ReadViewController_5.xib in Resources */,
 				3EAB11CF180D936400B0821B /* ReadViewController.xib in Resources */,
 				3E545B9A180C5C4C00184ADB /* select.png in Resources */,
 				3EDB36B0180EF83400054F10 /* blueArrow@2x.png in Resources */,

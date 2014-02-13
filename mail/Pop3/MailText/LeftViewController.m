@@ -182,7 +182,11 @@
       
     }else if (indexPath.row == 2) {
         if (!_navSend) {
-            SendMailViewController *sendView = [[SendMailViewController alloc] init];
+            NSString *nibName = @"SendMailViewController";
+            if (iPhone5) {
+                nibName = @"SendMailViewController_5";
+            }
+            SendMailViewController *sendView = [[SendMailViewController alloc] initWithNibName:nibName bundle:nil];
             _navSend = [[UINavigationController alloc] initWithRootViewController:sendView];
             [sendView release];
         }

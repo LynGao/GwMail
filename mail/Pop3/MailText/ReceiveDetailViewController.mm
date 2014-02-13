@@ -18,7 +18,7 @@
 #import "SendMailViewController.h"
 
 
-@interface ReceiveDetailViewController () <MCOMessageViewDelegate,UIDocumentInteractionControllerDelegate>
+@interface ReceiveDetailViewController () <MCOMessageViewDelegate,UIDocumentInteractionControllerDelegate,UIActionSheetDelegate>
 {
     UIDocumentInteractionController *_docInteractionController;
 }
@@ -61,69 +61,96 @@
     return self;
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"index -- %d",buttonIndex);
+    NSInteger type = 0;
+    if (buttonIndex == 0) {
+        type = 10001;
+    }else if(buttonIndex == 1){
+        type = 10002;
+    }else if(buttonIndex == 2)
+        type = 10003;
+    if (type != 0) {
+        [self replayMail:type];
+    }
+}
+
 - (void)showReplayType
 {
-    UIView *bgView = [[UIView alloc] initWithFrame:self.view.bounds];
-    [bgView setTag:20001];
-    [bgView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.7]];
-    [bgView.layer setCornerRadius:1];
-    for (int i = 0; i < 3; i++) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setFrame:CGRectMake(self.view.frame.size.width / 2 - 100 / 2, 100 + 40 *i, 100, 40)];
-        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"回复类型"
+                                                       delegate:self
+                                              cancelButtonTitle:@"取消"
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"回复",@"回复全部",@"转发",nil];
+    [sheet showInView:self.view];
+    [sheet release];
     
-        switch (i) {
-            case 0:
-            {
-                //回复
-                [btn setTitle:@"回复" forState:UIControlStateNormal];
-                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
-                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
-                [btn setTag:10001];
-                [bgView addSubview:btn];
-            }
-                break;
-            case 1:
-            {
-                //回复全部
-                [btn setTitle:@"回复全部" forState:UIControlStateNormal];
-                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
-                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
-                [btn setTag:10002];
-                [bgView addSubview:btn];
-            }
-                break;
-            case 2:
-            {
-                //转发
-                [btn setTitle:@"转发" forState:UIControlStateNormal];
-                [btn.titleLabel setFont:[UIFont systemFontOfSize:15.0]];
-                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
-                [btn setTag:10003];
-                [bgView addSubview:btn];
-            }
-                break;
-            default:
-                break;
-        }
-    }
-    
-    [self.view addSubview:bgView];
-    [bgView release];
+//    UIView *bgView = [[UIView alloc] initWithFrame:self.view.bounds];
+//    [bgView setTag:20001];
+//    [bgView setBackgroundColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.7]];
+//    [bgView.layer setCornerRadius:1];
+//    for (int i = 0; i < 3; i++) {
+//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [btn setFrame:CGRectMake(self.view.frame.size.width / 2 - 100 / 2, 150 + 40 *i, 100, 40)];
+//        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+//        [btn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+//    
+//        switch (i) {
+//            case 0:
+//            {
+//                //回复
+//                [btn setTitle:@"回复" forState:UIControlStateNormal];
+//                [btn.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
+//                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+//                [btn setTag:10001];
+//                [bgView addSubview:btn];
+//            }
+//                break;
+//            case 1:
+//            {
+//                //回复全部
+//                [btn setTitle:@"回复全部" forState:UIControlStateNormal];
+//                [btn.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
+//                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+//                [btn setTag:10002];
+//                [bgView addSubview:btn];
+//            }
+//                break;
+//            case 2:
+//            {
+//                //转发
+//                [btn setTitle:@"转发" forState:UIControlStateNormal];
+//                [btn.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
+//                [btn addTarget:self action:@selector(replayMail:) forControlEvents:UIControlEventTouchUpInside];
+//                [btn setTag:10003];
+//                [bgView addSubview:btn];
+//            }
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    
+//    [self.view addSubview:bgView];
+//    [bgView release];
 }
 
 #pragma mark -- 回复邮件
-- (void)replayMail:(UIButton *)sender
+- (void)replayMail:(NSInteger)type
 {
 //    NSString *innerMailText = [_messageView.webView stringByEvaluatingJavaScriptFromString:@"document.body.innerText"];
 
-    SendMailViewController *sendController = [[SendMailViewController alloc] init];
+    NSString *nibName = @"SendMailViewController";
+    if (iPhone5) {
+        nibName = @"SendMailViewController_5";
+    }
+    SendMailViewController *sendController = [[SendMailViewController alloc] initWithNibName:nibName bundle:nil];
     //正文
     NSString *str = [NSString stringWithFormat:@"<div contenteditable=true id = \"beignDiv\"><br/><div>---来自随心邮苹果客户端</div><br/>%@</div>",_messageView.htmlStrings];
     [sendController setInnerText:str];
     
-    switch (sender.tag) {
+    switch (type) {
         case 10001:
         {
             //回复
@@ -248,27 +275,37 @@
 
 - (void)viewDidLoad {
     
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
     CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 44);
     _messageView = [[MCOMessageView alloc] initWithFrame:frame];
     _messageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:_messageView];
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _messageView.frame.size.height + _messageView.frame.origin.y - 44, _messageView.frame.size.width, 44)];
+    CGFloat deta = 0;
+    if (IOS7_OR_LATER) {
+        deta = 20;
+    }
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _messageView.frame.size.height + _messageView.frame.origin.y - 44 - deta, _messageView.frame.size.width, 44)];
     [self.view addSubview:bottomView];
-    [bottomView setBackgroundColor:[UIColor whiteColor]];
+    [bottomView setBackgroundColor:[UIColor colorWithRed:180.0/255.0 green:208.0/255.0 blue:240.0/255.0 alpha:1]];
     
-    UIButton *replayBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [replayBtn setFrame:CGRectMake(10, 10, 44, 35)];
+    UIButton *replayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [replayBtn setFrame:CGRectMake(10, 10, 60, 30)];
     [replayBtn setTitle:@"回复" forState:UIControlStateNormal];
     [replayBtn setTitle:@"回复" forState:UIControlStateHighlighted];
+    [replayBtn setBackgroundImage:[UIImage imageNamed:@"button.png"] forState:UIControlStateNormal];
+    [replayBtn setTitleColor:[UIColor colorWithRed:38.0/255.0 green:143.0/255.0 blue:241.0/255.0 alpha:1] forState:UIControlStateNormal];
     [bottomView addSubview:replayBtn];
     [replayBtn addTarget:self action:@selector(showReplayType) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *delBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [delBtn setFrame:CGRectMake(10 + 44 + 10, 10, 44, 40)];
+    UIButton *delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [delBtn setFrame:CGRectMake(10 + 60 + 10, 10, 60, 30)];
     [delBtn setTitle:@"删除" forState:UIControlStateNormal];
     [delBtn setTitle:@"删除" forState:UIControlStateHighlighted];
+    [delBtn setTitleColor:[UIColor colorWithRed:38.0/255.0 green:143.0/255.0 blue:241.0/255.0 alpha:1] forState:UIControlStateNormal];
     [bottomView addSubview:delBtn];
+    [delBtn setBackgroundImage:[UIImage imageNamed:@"button.png"] forState:UIControlStateNormal];
     [delBtn addTarget:self action:@selector(deleteMail) forControlEvents:UIControlEventTouchUpInside];
 
     [bottomView release];
@@ -329,14 +366,11 @@
                 [_messageView setMessage:msg];
             }];
         }
-
     }
-    
 }
 
 - (void) setMessage:(MCOIMAPMessage *)message
 {
-    
 //    NSArray *array = [_message attachments];
 	MCLog("set message : %s", message.description.UTF8String);
     for(MCOOperation * op in _ops) {
@@ -480,10 +514,8 @@ typedef void (^DownloadCallback)(NSError * error);
 {
     MCOIMAPFetchContentOperation * op = [self _fetchIMAPPartWithUniqueID:partUniqueID folder:_folder];
     [op setProgress:^(unsigned int current, unsigned int maximum) {
-        MCLog("progress content: %u/%u", current, maximum);
         
         NSLog(@"progress content: %u/%u", current, maximum);
-        
         if (current == maximum) {
             [self hiddenHud];
         }
@@ -500,6 +532,8 @@ typedef void (^DownloadCallback)(NSError * error);
             [_callbacks setObject:blocks forKey:partUniqueID];
         }
         [blocks addObject:[downloadFinished copy]];
+    }else{
+          [self hiddenHud];
     }
 }
 

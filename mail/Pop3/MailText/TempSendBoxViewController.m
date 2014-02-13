@@ -143,7 +143,11 @@
         
         Mail *mail = [self.resultMailList objectAtIndex:indexPath.row];
        
-        ReadViewController *read = [[ReadViewController alloc] init];
+        NSString *nibName = @"ReadViewController";
+        if (iPhone5) {
+            nibName = @"ReadViewController_5";
+        }
+        ReadViewController *read = [[ReadViewController alloc] initWithNibName:nibName bundle:nil];
         [read setMail:mail];
         [read setShowType:self.showType];
         [self.navigationController pushViewController:read animated:YES];
