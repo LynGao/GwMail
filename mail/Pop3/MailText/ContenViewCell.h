@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ContenViewCell : UITableViewCell
+@interface ContenViewCell : UITableViewCell <UIWebViewDelegate>
 @property (retain, nonatomic) IBOutlet UITextView *contentVIew;
 @property (retain, nonatomic) IBOutlet UIWebView *webContentView;
 

@@ -57,8 +57,11 @@
     }
     
     
-    
-    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStylePlain];
+    CGFloat width = self.view.frame.size.width;
+    if (IS_IPAD) {
+        width = self.view.frame.size.height;
+    }
+    _mainTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, width, self.view.frame.size.height - 44) style:UITableViewStylePlain];
     _mainTable.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [_mainTable setDelegate:self];
     [_mainTable setDataSource:self];
