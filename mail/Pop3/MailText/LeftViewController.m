@@ -219,12 +219,12 @@
         [tempS release];
     }
     else if (indexPath.row == 5) {
-        if (!_navSet){
-            SetMailViewController *setView = [[SetMailViewController alloc] init];
-            _navSet = [[UINavigationController alloc] initWithRootViewController:setView];
-            [setView release];
-        }
-        [self.revealSideViewController popViewControllerWithNewCenterController:_navSet animated:YES];
+     
+        SetMailViewController *setView = [[SetMailViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:setView];
+        [setView release];
+        [self.revealSideViewController popViewControllerWithNewCenterController:nav animated:YES];
+        [nav release];
     }else if (indexPath.row == 6)
     {
 //    
@@ -245,6 +245,8 @@
         [self presentViewController:login
                            animated:YES
                          completion:^{
+                             
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"LogOutNotifi" object:nil];
         }];
         
         [login release];

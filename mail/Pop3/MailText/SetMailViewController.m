@@ -69,8 +69,15 @@
     [fistLabel setText:@"是否记住密码，登陆时无需再输入"];
     [_scrollView addSubview:fistLabel];
     
-    UIView *v1 = [self createChangeView:@selector(remberPwd:) orginY:fistLabel.frame.size.height + fistLabel.frame.origin.y + 3 tag:1000 title:@"是"];
-    UIView *v2 = [self createChangeView:@selector(remberPwd:) orginY:v1.frame.size.height + v1.frame.origin.y + 3 tag:1001 title:@"否"];
+    UIView *v1 = [self createChangeView:@selector(remberPwd:)
+                                 orginY:fistLabel.frame.size.height + fistLabel.frame.origin.y + 3
+                                    tag:1000
+                                  title:@"是"];
+    
+    UIView *v2 = [self createChangeView:@selector(remberPwd:)
+                                 orginY:v1.frame.size.height + v1.frame.origin.y + 3
+                                    tag:1001
+                                  title:@"否"];
     
     [_scrollView addSubview:v1];
     [_scrollView addSubview:v2];
@@ -173,12 +180,13 @@
 
 - (void)save
 {
-   
-    
     _isRemeber ? [Util updateUserDefualt:@"1" key:IS_REMBER_PWD] : [Util updateUserDefualt:@"0" key:IS_REMBER_PWD];
     
      _isAutoLogin ? [Util updateUserDefualt:@"1" key:IS_AUTO_LOGIN] : [Util updateUserDefualt:@"0" key:IS_AUTO_LOGIN];
     
+    if (_isAutoLogin) {
+        [Util updateUserDefualt:@"1" key:IS_REMBER_PWD];
+    }
     
     UITextField *senderSer = (UITextField *)[_scrollView viewWithTag:4000];
     if (senderSer.text.length > 0) {
@@ -265,8 +273,6 @@
         _curTag1 = btn.tag;
         btn.selected = !btn.selected;
         
-//        btn.selected ? [Util updateUserDefualt:@"1" key:IS_REMBER_PWD] : [Util updateUserDefualt:@"0" key:IS_REMBER_PWD];
-        
         if(btn.selected)
             _isRemeber = YES;
         else
@@ -297,7 +303,6 @@
          _curTag2 = btn.tag;
          btn.selected = !btn.selected;
         
-//         btn.selected ? [Util updateUserDefualt:@"1" key:IS_AUTO_LOGIN] : [Util updateUserDefualt:@"0" key:IS_AUTO_LOGIN];
          
          if(btn.selected)
              _isAutoLogin = YES;
@@ -379,17 +384,27 @@
     [v addSubview:btn1];
     [btn1 addTarget:self action:seltor forControlEvents:UIControlEventTouchUpInside];
     
-    
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn2 setFrame:CGRectMake(24, 0, 22, 22)];
     [btn2 setTitle:title forState:UIControlStateNormal];
     [btn2.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [btn2 addTarget:self action:seltor forControlEvents:UIControlEventTouchUpInside];
     [btn2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [btn2 setTag:tag + 1];
+    
     [v addSubview:btn2];
     
-   
+    
+    if ([[Util getObjFromUserDefualt:IS_AUTO_LOGIN] isEqualToString:@"1"] && tag == 2000) {
+        [btn1 setSelected:YES];
+    }else{
+        [btn1 setSelected:NO];
+    }
+    
+    if ([[Util getObjFromUserDefualt:IS_REMBER_PWD] isEqualToString:@"1"] && tag == 1000) {
+        [btn1 setSelected:YES];
+    }else{
+        [btn1 setSelected:NO];
+    }
     return [v autorelease];
 }
 

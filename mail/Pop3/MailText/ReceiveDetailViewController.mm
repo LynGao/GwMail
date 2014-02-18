@@ -286,7 +286,16 @@
     if (IOS7_OR_LATER) {
         deta = 20;
     }
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _messageView.frame.size.height + _messageView.frame.origin.y - 44 - deta, _messageView.frame.size.width, 44)];
+    
+    UIView *bottomView = [[UIView alloc] init];
+
+    if ([[[UIDevice currentDevice] model] isEqualToString:@"iPhone"] || [[[UIDevice currentDevice] model] isEqualToString:@"iPhone Simulator"]) {
+        [bottomView setFrame:CGRectMake(0, _messageView.frame.size.height + _messageView.frame.origin.y - 44 - deta, _messageView.frame.size.width, 44)];
+    }else{
+        NSLog(@"bound %f view %f screeen %f",self.view.bounds.size.width,self.view.frame.size.width,[[UIScreen mainScreen] bounds].size.width);
+        [bottomView setFrame:CGRectMake(0,_messageView.frame.size.width - 88 - deta, self.view.frame.size.height, 44)];
+    }
+    
     [self.view addSubview:bottomView];
     [bottomView setBackgroundColor:[UIColor colorWithRed:180.0/255.0 green:208.0/255.0 blue:240.0/255.0 alpha:1]];
     

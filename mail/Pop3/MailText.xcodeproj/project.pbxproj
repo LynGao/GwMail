@@ -79,7 +79,7 @@
 		CC01819B188D157000BBF3D4 /* ShowTipsViewController_ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC01819A188D156F00BBF3D4 /* ShowTipsViewController_ipad.xib */; };
 		CC171AFA180CE1AC006E7C75 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC171AF9180CE1AC006E7C75 /* CoreData.framework */; };
 		CC171B01180CE5FD006E7C75 /* MailModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CC171AFF180CE5FD006E7C75 /* MailModel.xcdatamodeld */; };
-		CC171B0A180CEA9C006E7C75 /* Mail.m in Sources */ = {isa = PBXBuildFile; fileRef = CC171B09180CEA9C006E7C75 /* Mail.m */; };
+		CC1D553218ADF4D100037BDF /* Mail.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1D553118ADF4D100037BDF /* Mail.m */; };
 		CC37DE2918A8A6BE0029E31F /* SendByMcoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37DE2818A8A6BE0029E31F /* SendByMcoViewController.m */; };
 		CC37F5A818A4D9DB0083602B /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37F5A718A4D9DB0083602B /* UIAlertView+Block.m */; };
 		CC3B576C17CB2A18004FFF75 /* libMailCore-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3B575917CB18AC004FFF75 /* libMailCore-ios.a */; };
@@ -262,8 +262,8 @@
 		CC01819A188D156F00BBF3D4 /* ShowTipsViewController_ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowTipsViewController_ipad.xib; sourceTree = "<group>"; };
 		CC171AF9180CE1AC006E7C75 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CC171B00180CE5FD006E7C75 /* MailModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MailModel.xcdatamodel; sourceTree = "<group>"; };
-		CC171B08180CEA9C006E7C75 /* Mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mail.h; sourceTree = "<group>"; };
-		CC171B09180CEA9C006E7C75 /* Mail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mail.m; sourceTree = "<group>"; };
+		CC1D553018ADF4D100037BDF /* Mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mail.h; sourceTree = "<group>"; };
+		CC1D553118ADF4D100037BDF /* Mail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mail.m; sourceTree = "<group>"; };
 		CC37DE2718A8A6BE0029E31F /* SendByMcoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendByMcoViewController.h; sourceTree = "<group>"; };
 		CC37DE2818A8A6BE0029E31F /* SendByMcoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendByMcoViewController.m; sourceTree = "<group>"; };
 		CC37F5A618A4D9DB0083602B /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
@@ -652,10 +652,10 @@
 				3E7083A61835345D00B7379B /* InfoPlist.strings */,
 				3E7083A71835345D00B7379B /* MailText-Info.plist */,
 				CC171AFF180CE5FD006E7C75 /* MailModel.xcdatamodeld */,
+				CC1D553018ADF4D100037BDF /* Mail.h */,
+				CC1D553118ADF4D100037BDF /* Mail.m */,
 				CC77D8D91888D40B0044CE42 /* PopMail.h */,
 				CC77D8DA1888D40B0044CE42 /* PopMail.m */,
-				CC171B08180CEA9C006E7C75 /* Mail.h */,
-				CC171B09180CEA9C006E7C75 /* Mail.m */,
 				3EAA40C917E5C02F00438ED9 /* ImageIO.framework */,
 				3EAA40C717E5BCAC00438ED9 /* QuartzCore.framework */,
 				EC1C614017C4508E0030309D /* Security.framework */,
@@ -913,7 +913,6 @@
 				3E545B87180C558C00184ADB /* TempSendBoxViewController.m in Sources */,
 				CCBA00DE1887BD070044B43F /* ReceiveBiz.m in Sources */,
 				EC1C614D17C4F5A70030309D /* SendMailViewController.m in Sources */,
-				CC171B0A180CEA9C006E7C75 /* Mail.m in Sources */,
 				EC1C615917C50E300030309D /* Base64Transcoder.m in Sources */,
 				EC1C615A17C50E300030309D /* HSK_CFUtilities.m in Sources */,
 				EC1C615B17C50E300030309D /* NSData+Base64Additions.m in Sources */,
@@ -929,6 +928,7 @@
 				3E37CFBF17DF45C800802137 /* SendBiz.m in Sources */,
 				3EAB11C8180D906900B0821B /* ReadViewController.m in Sources */,
 				3E37CFC317DF471A00802137 /* Util.m in Sources */,
+				CC1D553218ADF4D100037BDF /* Mail.m in Sources */,
 				3E37CFC817DF474E00802137 /* MBProgressHUD.m in Sources */,
 				3E37CFCE17DF5A5200802137 /* ReceiveCell.m in Sources */,
 				3E37CFD317DF5B9700802137 /* SubjectCell.m in Sources */,

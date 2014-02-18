@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "Mail.h"
 #import "ReadViewController.h"
+#import "Util.h"
 
 @interface TempSendBoxViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -86,7 +87,7 @@
     [request setEntity:entityDes];
     
     NSLog(@"self.show type = %d",self.showType);
-    NSPredicate *condition = [NSPredicate predicateWithFormat:@"mail_type = %@",[NSNumber numberWithInteger:self.showType]];
+    NSPredicate *condition = [NSPredicate predicateWithFormat:@"mail_type = %@ AND mail_ower = %@",[NSNumber numberWithInteger:self.showType],[Util getObjFromUserDefualt:SENDER]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"mail_date" ascending:NO];
     [request setSortDescriptors:[NSArray arrayWithObject:sort]];
     [sort release];

@@ -6,6 +6,7 @@
         <attribute name="mail_content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mail_date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mail_from" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mail_ower" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mail_removeFlag" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mail_title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mail_to" optional="YES" attributeType="String" syncable="YES"/>

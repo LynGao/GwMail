@@ -210,6 +210,20 @@
         [[builder header] setCc:cCAddressArray];
     }
     
+
+    //附件
+    if (self.imgArray.count > 0) {
+        NSMutableArray *arry = [NSMutableArray arrayWithCapacity:0];
+        for (int i = 0; i < self.imgArray.count ; i++) {
+            UIImage *image = [self.imgArray objectAtIndex:i];
+            NSData *data = UIImageJPEGRepresentation(image, 1.0);
+            MCOAttachment *attach = [MCOAttachment attachmentWithData:data filename:[NSString stringWithFormat:@"pic_%d.png",i]];
+            [arry addObject:attach];
+        }
+        NSLog(@"--- attch -- %@",arry);
+        [builder setAttachments:arry];
+    }
+    
     [[builder header] setSubject:sub];
     [builder setTextBody:content];
   
@@ -313,18 +327,6 @@
 #pragma mark -- 删除内容
 - (IBAction)clearText:(id)sender
 {
-  
-//    NSInteger contRow = 2;
-//    if ((_ccFlag && !_fjFlag) || (!_ccFlag && _fjFlag)) {
-//        contRow = 3;
-//    }
-//    if (_ccFlag && _fjFlag) {
-//        contRow = 4;
-//    }
-//    
-//    ContenViewCell *contentCell = (ContenViewCell *)[_mainTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:contRow inSection:0]];
-//    [contentCell.contentVIew setText:@""];
-    
     self.innerText = @"<div contenteditable=true id = \"beignDiv\"><br/><div>---来自随心邮苹果客户端</div><br/></div>";
     self.receiversString = nil;
     self.subjectString = nil;
@@ -410,6 +412,8 @@
     [mail setMail_from:[Util getObjFromUserDefualt:SENDER]];
     [mail setMail_type:[NSNumber numberWithInteger:_showType]];
     [mail setMail_date:[Util stringFromDate:[NSDate date]]];
+    
+    [mail setMail_ower:[Util getObjFromUserDefualt:SENDER]];
     
     if ( self.imgArray.count > 0) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

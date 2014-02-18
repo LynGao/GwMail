@@ -25,7 +25,6 @@
 
 @interface ReceiveViewController ()<ReceiveDetailDelegate>
 {
-    UIWebView *_web;
     NSInteger _totalMailCount;//总邮件
     UITableView *_mainTable;
     BOOL _isLoading;
@@ -39,7 +38,6 @@
 }
 
 @property (nonatomic, retain) __block NSMutableArray *resultMailList;
-@property (nonatomic, retain) NSMutableDictionary *detailHadFormatDict;
 @property (nonatomic, retain) NSMutableDictionary *readFlagDict;
 
 @property (nonatomic, retain) __block NSMutableArray *containerMailList;//装载临时的邮件。
@@ -51,7 +49,6 @@
 {
     [_readFlagDict release];
     [_titleLable release];
-    [_detailHadFormatDict release];
     [_mainTable release];
     [_resultMailList release];
     [super dealloc];
@@ -66,9 +63,30 @@
     return self;
 }
 
+- (void)logoutNotifi
+{
+    [self.resultMailList removeAllObjects];
+    [self.readFlagDict removeAllObjects];
+    [self.containerMailList removeAllObjects];
+    [_titleLable setText:@""];
+    
+    _totalMailCount = 0;
+    _isLoading = NO;
+    _unreadCount = 0;
+    _curListCount = 0;//当前信息的条数
+    
+    [_mainTable reloadData];
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(logoutNotifi)
+                                                 name:@"LogOutNotifi"
+                                               object:nil];
 
     self.title = @"收件箱";
     
@@ -234,7 +252,6 @@
 
         
         MCOIMAPFetchMessagesOperation *fetchOperation = [[[AppDelegate getDelegate] imapSession] fetchMessagesByNumberOperationWithFolder:folder requestKind:requestKind numbers:[MCOIndexSet indexSetWithRange:fetchRange]];
-        ;
         
         [fetchOperation start:^(NSError * error, NSArray * fetchedMessages, MCOIndexSet * vanishedMessages) {
             

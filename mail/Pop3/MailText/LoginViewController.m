@@ -419,10 +419,7 @@
         }else
             return NO;
     }else{
-        if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait || toInterfaceOrientation == UIInterfaceOrientationMaskPortraitUpsideDown) {
-            return NO;
-        }else
-            return YES;
+        return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
     }
 }
 

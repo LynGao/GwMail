@@ -110,12 +110,13 @@
     if (_showType == SENDBOXMAIL || _showType == TEMPMAIL) {
         [_firstBtn addTarget:self action:@selector(moveToRubbish) forControlEvents:UIControlEventTouchUpInside];
         [_secBtn addTarget:self action:@selector(removeRubbish) forControlEvents:UIControlEventTouchUpInside];
-            [_secBtn setTitle:@"彻底删除" forState:UIControlStateNormal];
+        [_secBtn setTitle:@"彻底删除" forState:UIControlStateNormal];
         [_thirdBtn addTarget:self action:@selector(goToEidtMail) forControlEvents:UIControlEventTouchUpInside];
     }else{
         [_firstBtn addTarget:self action:@selector(removeRubbish) forControlEvents:UIControlEventTouchUpInside];
         [_secBtn setTitle:@"恢复" forState:UIControlStateNormal];
         [_secBtn addTarget:self action:@selector(recovermail) forControlEvents:UIControlEventTouchUpInside];
+        [_thirdBtn setHidden:YES];
         [_thirdBtn addTarget:self action:@selector(goToEidtMail) forControlEvents:UIControlEventTouchUpInside];
 
     }

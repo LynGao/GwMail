@@ -42,10 +42,18 @@
     [super dealloc];
 }
 
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    
+    return UIInterfaceOrientationMaskAll;
+    
+}
+
 + (AppDelegate *)getDelegate
 {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
+
 
 - (void)rebuilSessions
 {
